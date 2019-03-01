@@ -28,11 +28,7 @@ void* producer (void* v) {
 			++producer_wait_count;
 		}
 		// Increase items and update histogram if 
-		if(items < MAX_ITEMS) {
-			histogram[++items]++;
-		} else {
-			++producer_wait_count;
-		}
+		histogram[++items]++;
 		// Release lock
 		uthread_cond_broadcast(data_convar);	
   		uthread_mutex_unlock(data_mutex);
@@ -59,11 +55,10 @@ void* consumer (void* v) {
 }
 
 int main (int argc, char** argv) {
+	uthread_init(4);
 
 	data_mutex = uthread_mutex_create(&data_mutex);
 	data_convar = uthread_cond_create(data_mutex);	
-
-	uthread_init(4);
 
 	uthread_t threads[4];
 
@@ -76,12 +71,12 @@ int main (int argc, char** argv) {
 		uthread_join(threads[i], NULL); 
 	}
 
-  printf ("producer_wait_count=%d\nconsumer_wait_count=%d\n", producer_wait_count, consumer_wait_count);
-  printf ("items value histogram:\n");
-  int sum=0;
-  for (int i = 0; i <= MAX_ITEMS; i++) {
-    printf ("  items=%d, %d times\n", i, histogram [i]);
-    sum += histogram [i];
-  }
-  assert (sum == sizeof (threads) / sizeof (uthread_t) * NUM_ITERATIONS);
+	printf ("producer_wait_count=%d\nconsumer_wait_count=%d\n", producer_wait_count, consumer_wait_count);
+  	printf ("items value histogram:\n");
+  	int sum=0;
+  	for (int i = 0; i <= MAX_ITEMS; i++) {
+    	printf ("  items=%d, %d times\n", i, histogram [i]);
+    	sum += histogram [i];
+  	}
+  	assert (sum == sizeof (threads) / sizeof (uthread_t) * NUM_ITERATIONS);
 }
