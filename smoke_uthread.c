@@ -173,10 +173,6 @@ int main (int argc, char** argv) {
   uthread_create(informant, is[2]);
 
   uthread_join(uthread_create(agent, a), 0);
-  fprintf(stderr, "signal_count[MATCH]:   %d, smoke_count[MATCH]:   %d, eq?:%s\r\n", signal_count[MATCH], smoke_count[MATCH], (signal_count[MATCH] == smoke_count[MATCH]) ? "true" : "false" );
-  fprintf(stderr, "signal_count[PAPER]:   %d, smoke_count[PAPER]:   %d, eq?:%s\r\n", signal_count[PAPER], smoke_count[PAPER], (signal_count[PAPER] == smoke_count[PAPER]) ? "true" : "false" );
-  fprintf(stderr, "signal_count[TOBACCO]: %d, smoke_count[TOBACCO]: %d, eq?:%s\r\n", signal_count[TOBACCO], smoke_count[TOBACCO], (signal_count[TOBACCO] == smoke_count[TOBACCO]) ? "true" : "false" );
-  fprintf(stderr, "smoke_count_sum:       %d, correct?:%s\r\n", smoke_count[MATCH]+smoke_count[PAPER]+smoke_count[TOBACCO], (smoke_count[MATCH]+smoke_count[PAPER]+smoke_count[TOBACCO] == NUM_ITERATIONS) ? "true" : "false" );
   assert (signal_count [MATCH]   == smoke_count [MATCH]);
   assert (signal_count [PAPER]   == smoke_count [PAPER]);
   assert (signal_count [TOBACCO] == smoke_count [TOBACCO]);
